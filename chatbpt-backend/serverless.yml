@@ -5,18 +5,22 @@ provider:
   runtime: python3.9
   region: ap-south-1
   environment:
-    DATABASE_URL: ${env:DATABASE_URL}  # Replace with your actual database URL
+    DATABASE_URL: ${env:DATABASE_URL}
 
 functions:
   api:
-    handler: main.handler  # Points to the Mangum handler in main.py
+    handler: app.main.handler  # Points to the Mangum handler in main.py
     events:
       - http:
           path: /
           method: ANY
-        - http:
+      - http:
           path: /{proxy+}
           method: ANY
 
 plugins:
   - serverless-python-requirements
+  
+custom:
+  pythonRequirements:
+    dockerizePip: true 
