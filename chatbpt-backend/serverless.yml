@@ -1,0 +1,22 @@
+service: chatbpt-backend
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: ap-south-1
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL}  # Replace with your actual database URL
+
+functions:
+  api:
+    handler: main.handler  # Points to the Mangum handler in main.py
+    events:
+      - http:
+          path: /
+          method: ANY
+        - http:
+          path: /{proxy+}
+          method: ANY
+
+plugins:
+  - serverless-python-requirements
